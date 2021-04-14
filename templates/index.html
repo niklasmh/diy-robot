@@ -18,6 +18,7 @@
   });
   socket.on("position-failed", (message) => {
     console.log(message);
+    refreshImage();
   });
   function refreshImage() {
     document.getElementById("camera").src = "/static/camera.png?" + +new Date();
