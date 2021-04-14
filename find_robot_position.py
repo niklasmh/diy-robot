@@ -52,9 +52,10 @@ def locate(assumed_position=[0, 0], capture_new_image=False, sigma=0.33):
     lower = int(max(0, (1.0 - sigma) * v))
     upper = int(min(255, (1.0 + sigma) * v))
 
-    if isPI and capture_new_image:
-        capture("static/camera.png")
+    if isPI:
         camera_image = "static/camera.png"
+        if capture_new_image:
+            capture("static/camera.png")
 
     # Make a canny of part of the floor
     # around the assumed position
