@@ -35,7 +35,10 @@ def handle_locate():
         assumed_position=[0, 0],
         capture_new_image=True
     )
-    emit("position", str(position[0]) + "," + str(position[1]))
+    if position:
+        emit("position", str(position[0]) + "," + str(position[1]))
+    else:
+        emit("position-failed", "Could not find position")
 
 
 if __name__ == '__main__':

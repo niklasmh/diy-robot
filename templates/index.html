@@ -16,6 +16,9 @@
     document.getElementById("position").value = position;
     refreshImage();
   });
+  socket.on("position-failed", (message) => {
+    console.log(message);
+  });
   function refreshImage() {
     document.getElementById("camera").src = "/static/camera.png?" + +new Date();
     document.getElementById("canny-camera").src =
