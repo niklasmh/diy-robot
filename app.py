@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, emit
 import find_robot_position
 
 app = Flask(__name__)
@@ -31,12 +31,11 @@ def handle_move(data):
 @socketio.on('locate')
 def handle_locate():
     print('locate')
-    print(
-        find_robot_position.locate(
-            assumed_position=[0, 0],
-            capture_new_image=True
-        )
+    position = find_robot_position.locate(
+        assumed_position=[0, 0],
+        capture_new_image=True
     )
+    emit("position", str(position[0]) + "," + str(position[1]))
 
 
 if __name__ == '__main__':

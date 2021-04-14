@@ -12,7 +12,11 @@
   function locate() {
     socket.emit("locate");
   }
+  socket.on("position", () => {
+    document.getElementById("camera").src = "/static/camera.png?" + +new Date();
+  });
 </script>
 <input id="position" value="10,0" />
 <button onclick="sendCommand()">Move</button>
 <button onclick="locate()">Locate</button>
+<img id="camera" src="/static/camera.png" />
