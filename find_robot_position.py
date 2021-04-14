@@ -93,7 +93,7 @@ def locate(assumed_position=[0, 0], capture_new_image=False, sigma=0.33):
     [positions, votes] = ght.detect(floor)
     if positions is None:
         print("Could not find any matches!")
-        return False
+        return []
     positions = positions[0]
 
     if debug:

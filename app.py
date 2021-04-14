@@ -34,7 +34,7 @@ def get_position(new_image=True, sigma=0.33):
         capture_new_image=new_image,
         sigma=sigma
     )
-    if position:
+    if position.any():
         emit("position", str(position[0]) + "," + str(position[1]))
     else:
         emit("position-failed", "Could not find position")
