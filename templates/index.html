@@ -16,8 +16,12 @@
     document.getElementById("position").value = position;
     document.getElementById("camera").src = "/static/camera.png?" + +new Date();
   });
+  window.onload(() => {
+    document.getElementById("camera").src = "/static/camera.png?" + +new Date();
+  });
 </script>
 <input id="position" value="10,0" />
 <button onclick="sendCommand()">Move</button>
 <button onclick="locate()">Locate</button>
+<br />
 <img id="camera" src="/static/camera.png" />
