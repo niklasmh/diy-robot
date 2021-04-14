@@ -12,6 +12,9 @@
   function locate() {
     socket.emit("locate");
   }
+  function relocate() {
+    socket.emit("relocate");
+  }
   socket.on("position", (position) => {
     document.getElementById("position").value = position;
     refreshImage();
@@ -26,10 +29,16 @@
       "/static/canny_camera.png?" + +new Date();
   }
 </script>
+<style>
+  button {
+    font-size: 3em;
+  }
+</style>
 <body onload="refreshImage()">
   <input id="position" value="10,0" />
   <button onclick="sendCommand()">Move</button>
   <button onclick="locate()">Locate</button>
+  <button onclick="relocate()">Relocate</button>
   <br />
   <img id="camera" src="/static/camera.png" />
   <img id="canny-camera" src="/static/canny_camera.png" />
