@@ -30,10 +30,11 @@ upper = int(min(255, (1.0 + sigma) * v))
 def canny(img, l, u, output, plot=False):
     # Apply canny
     image = cv.Canny(img, l, u)
-    if plot:
-        plt.imshow(image, 'gray')
-    if output:
-        plt.imsave(fname=output, arr=image, cmap='gray', format='png')
+    if debug:
+        if plot:
+            plt.imshow(image, 'gray')
+        if output:
+            plt.imsave(fname=output, arr=image, cmap='gray', format='png')
     return image
 
 
