@@ -28,10 +28,11 @@ def handle_move(data):
     print('move: ' + data)
 
 
-def get_position(new_image=True):
+def get_position(new_image=True, sigma=0.33):
     position = find_robot_position.locate(
         assumed_position=[0, 0],
-        capture_new_image=new_image
+        capture_new_image=new_image,
+        sigma=sigma
     )
     if position:
         emit("position", str(position[0]) + "," + str(position[1]))
@@ -46,9 +47,9 @@ def handle_locate():
 
 
 @socketio.on('relocate')
-def handle_locate():
+def handle_locate(sigma):
     print('relocate')
-    get_position(new_image=False)
+    get_position(new_image=False, sigma=float(sigma))
 
 
 if __name__ == '__main__':

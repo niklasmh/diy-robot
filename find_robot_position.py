@@ -24,9 +24,6 @@ except:
 base_image = cv.imread(floor_image)
 grey_image = cv.cvtColor(base_image, cv.COLOR_BGR2GRAY)
 v = np.median(grey_image)
-sigma = 0.33
-lower = int(max(0, (1.0 - sigma) * v))
-upper = int(min(255, (1.0 + sigma) * v))
 
 
 def canny(img, l, u, output, plot=False):
@@ -47,10 +44,13 @@ def capture(output):
     camera.close()
 
 
-def locate(assumed_position=[0, 0], capture_new_image=False):
+def locate(assumed_position=[0, 0], capture_new_image=False, sigma=0.33):
     """
     Find the most probable position of the robot.
     """
+    lower = int(max(0, (1.0 - sigma) * v))
+    upper = int(min(255, (1.0 + sigma) * v))
+
     if isPI and capture_new_image:
         capture("static/camera.png")
         camera_image = "static/camera.png"
