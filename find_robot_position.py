@@ -52,7 +52,7 @@ def locate(assumed_position=[0, 0], capture_new_image=False):
     Find the most probable position of the robot.
     """
     if isPI and capture_new_image:
-        capture("camera.png")
+        capture("static/camera.png")
 
     # Make a canny of part of the floor
     # around the assumed position
