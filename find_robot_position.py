@@ -13,7 +13,7 @@ try:
         camera_image = folder + f"camera{int(sys.argv[1])}.png"
     if len(sys.argv) > 2:
         floor_image = folder + f"floor{int(sys.argv[2])}.png"
-except e:
+except:
     print("CLI arguments: <camera-number> <floor-number>")
 
 debug = True
