@@ -53,6 +53,7 @@ def locate(assumed_position=[0, 0], capture_new_image=False):
     """
     if isPI and capture_new_image:
         capture("static/camera.png")
+        camera_image = "static/camera.png"
 
     # Make a canny of part of the floor
     # around the assumed position
@@ -73,6 +74,11 @@ def locate(assumed_position=[0, 0], capture_new_image=False):
         img = cv.flip(img, 0)
     height, width = img.shape[:2]
     camera = canny(img, lower, upper, folder + "canny_camera.png")
+
+    # Add canny image to webserver
+    if isPI and capture_new_image:
+        plt.imsave(fname="static/canny_camera.png",
+                   arr=camera, cmap='gray', format='png')
 
     if debug:
         print("Canny done")

@@ -18,6 +18,8 @@
   });
   function refreshImage() {
     document.getElementById("camera").src = "/static/camera.png?" + +new Date();
+    document.getElementById("canny-camera").src =
+      "/static/canny_camera.png?" + +new Date();
   }
 </script>
 <body onload="refreshImage()">
@@ -26,4 +28,5 @@
   <button onclick="locate()">Locate</button>
   <br />
   <img id="camera" src="/static/camera.png" />
+  <img id="canny-camera" src="/static/canny_camera.png" />
 </body>
