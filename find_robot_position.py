@@ -4,7 +4,7 @@ import cv2 as cv
 import sys
 import os
 
-isPI = os.uname().nodename
+isPI = os.uname().nodename == "raspberrypi"
 flipY = False
 flipX = False
 folder = "images/"
