@@ -31,7 +31,12 @@ def handle_move(data):
 @socketio.on('locate')
 def handle_locate():
     print('locate')
-    print(find_robot_position.locate())
+    print(
+        find_robot_position.locate(
+            assumed_position=[0, 0],
+            capture_new_image=True
+        )
+    )
 
 
 if __name__ == '__main__':

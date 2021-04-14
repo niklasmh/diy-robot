@@ -2,7 +2,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import cv2 as cv
 import sys
+import os
 
+isPI = os.uname().nodename
 flipY = False
 flipX = False
 folder = "images/"
@@ -38,10 +40,18 @@ def canny(img, l, u, output, plot=False):
     return image
 
 
-def locate(assumed_position=[0, 0]):
+def capture(output):
+    from picamera import PiCamera
+    camera = PiCamera()
+    camera.capture(output)
+
+
+def locate(assumed_position=[0, 0], capture_new_image=False):
     """
     Find the most probable position of the robot.
     """
+    if isPI and capture_new_image:
+        capture("camera.png")
 
     # Make a canny of part of the floor
     # around the assumed position
