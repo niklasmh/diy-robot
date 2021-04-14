@@ -12,7 +12,8 @@
   function locate() {
     socket.emit("locate");
   }
-  socket.on("position", () => {
+  socket.on("position", (position) => {
+    document.getElementById("position").value = position;
     document.getElementById("camera").src = "/static/camera.png?" + +new Date();
   });
 </script>
