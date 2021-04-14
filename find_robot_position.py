@@ -14,7 +14,6 @@ try:
     if len(sys.argv) > 2:
         floor_image = folder + f"floor{int(sys.argv[2])}.png"
 except e:
-    print(e)
     print("CLI arguments: <camera-number> <floor-number>")
 
 debug = True
@@ -38,7 +37,7 @@ def canny(img, l, u, output, plot=False):
     return image
 
 
-def find_robot_position(assumed_position):
+def locate(assumed_position=[0, 0]):
     """
     Find the most probable position of the robot.
     """
@@ -97,4 +96,5 @@ def find_robot_position(assumed_position):
     return positions[0][:2]
 
 
-print(find_robot_position([10, 10]))
+if __name__ == '__main__':
+    locate([10, 10])

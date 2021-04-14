@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template
 from flask_socketio import SocketIO
-import test
+import find_robot_position
 
 app = Flask(__name__)
 
@@ -31,7 +31,7 @@ def handle_move(data):
 @socketio.on('locate')
 def handle_locate():
     print('locate')
-    print(test.f())
+    print(find_robot_position.locate())
 
 
 if __name__ == '__main__':
