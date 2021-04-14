@@ -48,6 +48,7 @@ def locate(assumed_position=[0, 0], capture_new_image=False, sigma=0.33):
     """
     Find the most probable position of the robot.
     """
+    global camera_image
     lower = int(max(0, (1.0 - sigma) * v))
     upper = int(min(255, (1.0 + sigma) * v))
 
