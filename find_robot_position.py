@@ -8,15 +8,15 @@ flipX = False
 folder = "images/"
 camera_image = folder + "camera1.png"
 floor_image = folder + "floor4.png"
+debug = False
 try:
     if len(sys.argv) > 1:
         camera_image = folder + f"camera{int(sys.argv[1])}.png"
+        debug = True
     if len(sys.argv) > 2:
         floor_image = folder + f"floor{int(sys.argv[2])}.png"
 except:
     print("CLI arguments: <camera-number> <floor-number>")
-
-debug = True
 
 # Find the ideal canny bounds
 base_image = cv.imread(floor_image)
