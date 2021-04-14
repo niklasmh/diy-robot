@@ -44,6 +44,7 @@ def capture(output):
     from picamera import PiCamera
     camera = PiCamera()
     camera.capture(output)
+    camera.close()
 
 
 def locate(assumed_position=[0, 0], capture_new_image=False):
