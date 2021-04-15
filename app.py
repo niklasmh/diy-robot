@@ -48,7 +48,8 @@ def handle_locate():
 
 
 @socketio.on('relocate')
-def handle_locate(lower, upper):
+def handle_locate(params):
+    [lower, upper] = params.split(",")
     print('relocate')
     get_position(new_image=False, lower=float(lower), upper=float(upper))
 
