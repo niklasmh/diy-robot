@@ -40,7 +40,7 @@ def canny(img, l, u, output, plot=False):
 def capture(output):
     from picamera import PiCamera
     camera = PiCamera()
-    camera.capture(output,)
+    camera.capture(output, resize=(56, 56))
     camera.close()
 
 
@@ -56,7 +56,7 @@ def locate(assumed_position=[0, 0], capture_new_image=False, sigma=0.33):
     if isPI:
         camera_image = "static/camera.png"
         if capture_new_image:
-            capture("static/camera.png", resize=(56, 56))
+            capture("static/camera.png")
 
     # Make a canny of part of the floor
     # around the assumed position
