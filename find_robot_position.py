@@ -40,7 +40,7 @@ def canny(img, l, u, output, plot=False):
 def capture(output):
     from picamera import PiCamera
     camera = PiCamera()
-    camera.capture(output)
+    camera.capture(output,)
     camera.close()
 
 
@@ -49,13 +49,14 @@ def locate(assumed_position=[0, 0], capture_new_image=False, sigma=0.33):
     Find the most probable position of the robot.
     """
     global camera_image
-    lower = int(max(0, (1.0 - sigma) * v))
-    upper = int(min(255, (1.0 + sigma) * v))
+    lower = 20  # int(max(0, (1.0 - sigma) * v))
+    upper = 10  # int(min(255, (1.0 + sigma) * v))
+    print(lower, upper)
 
     if isPI:
         camera_image = "static/camera.png"
         if capture_new_image:
-            capture("static/camera.png")
+            capture("static/camera.png", resize=(56, 56))
 
     # Make a canny of part of the floor
     # around the assumed position
