@@ -44,14 +44,14 @@ def capture(output):
     camera.close()
 
 
-def locate(assumed_position=[0, 0], capture_new_image=False, sigma=0.33):
+def locate(assumed_position=[0, 0], capture_new_image=False, lower=10, upper=10):
     """
     Find the most probable position of the robot.
     """
     global camera_image
-    lower = 20  # int(max(0, (1.0 - sigma) * v))
-    upper = 10  # int(min(255, (1.0 + sigma) * v))
-    print(lower, upper)
+    # lower = 20  # int(max(0, (1.0 - sigma) * v))
+    # upper = 10  # int(min(255, (1.0 + sigma) * v))
+    #print(lower, upper)
 
     if isPI:
         camera_image = "static/camera.png"

@@ -47,9 +47,9 @@ def handle_locate():
 
 
 @socketio.on('relocate')
-def handle_locate(sigma):
+def handle_locate(lower, upper):
     print('relocate')
-    get_position(new_image=False, sigma=float(sigma))
+    get_position(new_image=False, lower=float(lower), upper=float(upper))
 
 
 if __name__ == '__main__':

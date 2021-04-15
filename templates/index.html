@@ -13,8 +13,9 @@
     socket.emit("locate");
   }
   function relocate() {
-    const sigma = document.getElementById("sigma").value.replace(",", ".");
-    socket.emit("relocate", sigma);
+    const lower = document.getElementById("lower").value.replace(",", ".");
+    const upper = document.getElementById("upper").value.replace(",", ".");
+    socket.emit("relocate", lower + "," + upper);
   }
   socket.on("position", (position) => {
     document.getElementById("position").value = position;
@@ -37,13 +38,16 @@
   }
   img {
     max-width: 480px;
+    min-width: 240px;
+    image-rendering: pixelated;
   }
 </style>
 <body onload="refreshImage()">
   <input id="position" value="10,0" />
   <button onclick="sendCommand()">Move</button>
   <button onclick="locate()">Locate</button>
-  <input id="sigma" value="0.33" type="number" step="0.1" />
+  <input id="lower" value="10" type="number" />
+  <input id="upper" value="10" type="number" />
   <button onclick="relocate()">Relocate</button>
   <br />
   <img id="camera" src="/static/camera.png" />
