@@ -2,7 +2,7 @@
 
 Experimenting with raspberry pi, computer vision and motors.
 
-# Setup
+## Setup
 
 Attach a camera to the raspberry pi.
 
@@ -15,7 +15,7 @@ cd diy-robot
 ./setup.sh
 ```
 
-# Run
+## Run
 
 On the raspberry pi:
 
