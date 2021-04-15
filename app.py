@@ -28,11 +28,12 @@ def handle_move(data):
     print('move: ' + data)
 
 
-def get_position(new_image=True, sigma=0.33):
+def get_position(new_image=True, lower=10, upper=10):
     position = find_robot_position.locate(
         assumed_position=[0, 0],
         capture_new_image=new_image,
-        sigma=sigma
+        lower=lower,
+        upper=upper,
     )
     if position.any():
         emit("position", str(position[0]) + "," + str(position[1]))
