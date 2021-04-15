@@ -44,7 +44,7 @@ def capture(output):
     camera.close()
 
 
-def locate(assumed_position=[0, 0], capture_new_image=False, lower=10, upper=10):
+def locate(assumed_position=[0, 0], capture_new_image=False, lower=40, upper=20):
     """
     Find the most probable position of the robot.
     """

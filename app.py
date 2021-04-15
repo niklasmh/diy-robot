@@ -28,7 +28,7 @@ def handle_move(data):
     print('move: ' + data)
 
 
-def get_position(new_image=True, lower=10, upper=10):
+def get_position(new_image=True, lower=40, upper=20):
     position = find_robot_position.locate(
         assumed_position=[0, 0],
         capture_new_image=new_image,

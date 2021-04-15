@@ -35,6 +35,8 @@
   button,
   input {
     font-size: 3rem;
+    max-width: 480px;
+    width: 100%;
   }
   img {
     max-width: 480px;
@@ -45,9 +47,11 @@
 <body onload="refreshImage()">
   <input id="position" value="10,0" />
   <button onclick="sendCommand()">Move</button>
+  <br />
   <button onclick="locate()">Locate</button>
-  <input id="lower" value="10" type="number" />
-  <input id="upper" value="10" type="number" />
+  <br />
+  <input id="lower" value="40" type="number" />
+  <input id="upper" value="20" type="number" />
   <button onclick="relocate()">Relocate</button>
   <br />
   <img id="camera" src="/static/camera.png" />
