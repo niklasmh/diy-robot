@@ -26,9 +26,10 @@ def handle_disconnect():
 
 @socketio.on('move')
 def handle_move(data):
-    print('move: ' + data)
+    [lower, upper] = data.split(",")
+    print('move: ' + lower)
     control_robot.setup()
-    control_robot.left(2)
+    control_robot.left(int(lower))
 
 
 def get_position(new_image=True, lower=40, upper=20):
