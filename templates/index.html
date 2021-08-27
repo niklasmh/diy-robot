@@ -55,8 +55,8 @@
         const socket = React.useRef();
 
         function refreshImage() {
-          camera.current.src = "/static/camera.png?" + +new Date();
-          canny.current.camera.src = "/static/canny_camera.png?" + +new Date();
+          cameraRef.current.src = "/static/camera.png?" + +new Date();
+          cannyCameraRef.current.src = "/static/canny_camera.png?" + +new Date();
         }
 
         React.useEffect(() => {
