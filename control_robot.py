@@ -2,80 +2,82 @@ from time import sleep
 import RPi.GPIO as GPIO
 
 
-IN1 = 17
-IN2 = 18
-IN3 = 27
-IN4 = 22
+motors = [
+    [17, 18, 27, 22],
+    [16, 20, 26, 21],
+]
+
+motor = 1
 
 time = 0.001
 
 
 def setup():
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup(IN1, GPIO.OUT)
-    GPIO.setup(IN2, GPIO.OUT)
-    GPIO.setup(IN3, GPIO.OUT)
-    GPIO.setup(IN4, GPIO.OUT)
-    GPIO.output(IN1, False)
-    GPIO.output(IN2, False)
-    GPIO.output(IN3, False)
-    GPIO.output(IN4, False)
+    GPIO.setup(motors[motor][0], GPIO.OUT)
+    GPIO.setup(motors[motor][1], GPIO.OUT)
+    GPIO.setup(motors[motor][2], GPIO.OUT)
+    GPIO.setup(motors[motor][3], GPIO.OUT)
+    GPIO.output(motors[motor][0], False)
+    GPIO.output(motors[motor][1], False)
+    GPIO.output(motors[motor][2], False)
+    GPIO.output(motors[motor][3], False)
 
 
 def Step1():
-    GPIO.output(IN4, True)
+    GPIO.output(motors[motor][3], True)
     sleep(time)
-    GPIO.output(IN4, False)
+    GPIO.output(motors[motor][3], False)
 
 
 def Step2():
-    GPIO.output(IN4, True)
-    GPIO.output(IN3, True)
+    GPIO.output(motors[motor][3], True)
+    GPIO.output(motors[motor][2], True)
     sleep(time)
-    GPIO.output(IN4, False)
-    GPIO.output(IN3, False)
+    GPIO.output(motors[motor][3], False)
+    GPIO.output(motors[motor][2], False)
 
 
 def Step3():
-    GPIO.output(IN3, True)
+    GPIO.output(motors[motor][2], True)
     sleep(time)
-    GPIO.output(IN3, False)
+    GPIO.output(motors[motor][2], False)
 
 
 def Step4():
-    GPIO.output(IN2, True)
-    GPIO.output(IN3, True)
+    GPIO.output(motors[motor][1], True)
+    GPIO.output(motors[motor][2], True)
     sleep(time)
-    GPIO.output(IN2, False)
-    GPIO.output(IN3, False)
+    GPIO.output(motors[motor][1], False)
+    GPIO.output(motors[motor][2], False)
 
 
 def Step5():
-    GPIO.output(IN2, True)
+    GPIO.output(motors[motor][1], True)
     sleep(time)
-    GPIO.output(IN2, False)
+    GPIO.output(motors[motor][1], False)
 
 
 def Step6():
-    GPIO.output(IN1, True)
-    GPIO.output(IN2, True)
+    GPIO.output(motors[motor][0], True)
+    GPIO.output(motors[motor][1], True)
     sleep(time)
-    GPIO.output(IN1, False)
-    GPIO.output(IN2, False)
+    GPIO.output(motors[motor][0], False)
+    GPIO.output(motors[motor][1], False)
 
 
 def Step7():
-    GPIO.output(IN1, True)
+    GPIO.output(motors[motor][0], True)
     sleep(time)
-    GPIO.output(IN1, False)
+    GPIO.output(motors[motor][0], False)
 
 
 def Step8():
-    GPIO.output(IN4, True)
-    GPIO.output(IN1, True)
+    GPIO.output(motors[motor][3], True)
+    GPIO.output(motors[motor][0], True)
     sleep(time)
-    GPIO.output(IN4, False)
-    GPIO.output(IN1, False)
+    GPIO.output(motors[motor][3], False)
+    GPIO.output(motors[motor][0], False)
 
 
 def left(step):
