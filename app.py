@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template
 from flask_socketio import SocketIO, emit
+import control_robot
 import find_robot_position
 
 app = Flask(__name__)
@@ -26,6 +27,7 @@ def handle_disconnect():
 @socketio.on('move')
 def handle_move(data):
     print('move: ' + data)
+    control_robot.left(2)
 
 
 def get_position(new_image=True, lower=40, upper=20):
