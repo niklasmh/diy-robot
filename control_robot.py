@@ -76,7 +76,7 @@ def step8(motor):
     GPIO.output(motors[motor][0], False)
 
 
-def left(step, motor):
+def up(step, motor):
     for i in range(step):
         # os.system('clear')
         step1(motor)
@@ -87,10 +87,10 @@ def left(step, motor):
         step6(motor)
         step7(motor)
         step8(motor)
-        print("step left: ", i)
+        print("step up: ", i)
 
 
-def right(step, motor):
+def down(step, motor):
     for i in range(step):
         # os.system('clear')
         step8(motor)
@@ -101,4 +101,4 @@ def right(step, motor):
         step3(motor)
         step2(motor)
         step1(motor)
-        print("step right: ", i)
+        print("step down: ", i)

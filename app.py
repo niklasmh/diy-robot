@@ -32,9 +32,9 @@ def handle_move(data):
     print('move: ' + degrees)
     degrees = int(degrees)
     if degrees > 0:
-        control_robot.left(degrees, int(motor))
+        control_robot.up(degrees, int(motor))
     else:
-        control_robot.right(degrees, int(motor))
+        control_robot.down(-degrees, int(motor))
 
 
 def get_position(new_image=True, lower=40, upper=20):
