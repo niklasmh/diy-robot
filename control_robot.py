@@ -29,11 +29,13 @@ steps = [
     [0, 3],
 ]
 
-stepsToDeg = 260 / 180
+
+def degToSteps(deg):
+    return deg * 260 / 180
 
 
 def up(degrees, motor, time=time):
-    for _ in range(stepsToDeg(degrees)):
+    for _ in range(degToSteps(degrees)):
         for step in steps:
             for pin in step:
                 GPIO.output(motors[motor][pin], True)
@@ -43,7 +45,7 @@ def up(degrees, motor, time=time):
 
 
 def down(degrees, motor, time=time):
-    for _ in range(stepsToDeg(degrees)):
+    for _ in range(degToSteps(degrees)):
         for step in steps[::-1]:
             for pin in step:
                 GPIO.output(motors[motor][pin], True)
