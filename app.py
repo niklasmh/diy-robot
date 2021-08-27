@@ -27,6 +27,7 @@ def handle_disconnect():
 @socketio.on('move')
 def handle_move(data):
     print('move: ' + data)
+    control_robot.setup()
     control_robot.left(2)
 
 

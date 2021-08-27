@@ -1,7 +1,6 @@
 from time import sleep
 import RPi.GPIO as GPIO
 
-GPIO.setmode(GPIO.BCM)
 
 IN1 = 17
 IN2 = 18
@@ -10,14 +9,17 @@ IN4 = 22
 
 time = 0.001
 
-GPIO.setup(IN1, GPIO.OUT)
-GPIO.setup(IN2, GPIO.OUT)
-GPIO.setup(IN3, GPIO.OUT)
-GPIO.setup(IN4, GPIO.OUT)
-GPIO.output(IN1, False)
-GPIO.output(IN2, False)
-GPIO.output(IN3, False)
-GPIO.output(IN4, False)
+
+def setup():
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(IN1, GPIO.OUT)
+    GPIO.setup(IN2, GPIO.OUT)
+    GPIO.setup(IN3, GPIO.OUT)
+    GPIO.setup(IN4, GPIO.OUT)
+    GPIO.output(IN1, False)
+    GPIO.output(IN2, False)
+    GPIO.output(IN3, False)
+    GPIO.output(IN4, False)
 
 
 def Step1():
