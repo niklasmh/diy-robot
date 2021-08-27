@@ -54,6 +54,11 @@
         const cannyCameraRef = React.useRef();
         const socket = React.useRef();
 
+        function refreshImage() {
+          camera.current.src = "/static/camera.png?" + +new Date();
+          canny.current.camera.src = "/static/canny_camera.png?" + +new Date();
+        }
+
         React.useEffect(() => {
           socket.current = io();
           socket.current.on("position", (position) => {
@@ -79,14 +84,10 @@
           const upper = upper.current.value.replace(",", ".");
           socket.current.emit("relocate", lower + "," + upper);
         }
-        function refreshImage() {
-          camera.current.src = "/static/camera.png?" + +new Date();
-          canny.current.camera.src = "/static/canny_camera.png?" + +new Date();
-        }
 
         return (
           <div className="container flex flex-col gap-8 mx-auto pb-20">
-            <input ref={positionRef} value={10} min={0} max={100} type="number" />
+            <input ref={positionRef} defaultValue={10} min={0} max={100} type="number" />
             <Button onClick={() => sendCommand(0, 1)} label="Move 0 up" />
             <Button onClick={() => sendCommand(0, -1)} label="Move 0 down" />
             <Button onClick={() => sendCommand(1, 1)} label="Move 1 up" />
@@ -94,8 +95,8 @@
             <br />
             <Button onClick={() => locate()} label="Locate" />
             <br />
-            <input ref={lowerRef} value="40" type="number" />
-            <input ref={upperRef} value="20" type="number" />
+            <input ref={lowerRef} defaultValue={40} type="number" />
+            <input ref={upperRef} defaultValue={20} type="number" />
             <Button onClick={() => relocate()} label="Relocate" />
             <br />
             <img ref={cameraRef} src="/static/camera.png" />
