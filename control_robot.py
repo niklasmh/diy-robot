@@ -14,23 +14,19 @@ time = 0.001
 
 def setup():
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup(motors[motor][0], GPIO.OUT)
-    GPIO.setup(motors[motor][1], GPIO.OUT)
-    GPIO.setup(motors[motor][2], GPIO.OUT)
-    GPIO.setup(motors[motor][3], GPIO.OUT)
-    GPIO.output(motors[motor][0], False)
-    GPIO.output(motors[motor][1], False)
-    GPIO.output(motors[motor][2], False)
-    GPIO.output(motors[motor][3], False)
+    for motor in motors:
+        for pin in motor:
+            GPIO.setup(pin, GPIO.OUT)
+            GPIO.output(pin, False)
 
 
-def Step1():
+def step1(motor):
     GPIO.output(motors[motor][3], True)
     sleep(time)
     GPIO.output(motors[motor][3], False)
 
 
-def Step2():
+def step2(motor):
     GPIO.output(motors[motor][3], True)
     GPIO.output(motors[motor][2], True)
     sleep(time)
@@ -38,13 +34,13 @@ def Step2():
     GPIO.output(motors[motor][2], False)
 
 
-def Step3():
+def step3(motor):
     GPIO.output(motors[motor][2], True)
     sleep(time)
     GPIO.output(motors[motor][2], False)
 
 
-def Step4():
+def step4(motor):
     GPIO.output(motors[motor][1], True)
     GPIO.output(motors[motor][2], True)
     sleep(time)
@@ -52,13 +48,13 @@ def Step4():
     GPIO.output(motors[motor][2], False)
 
 
-def Step5():
+def step5(motor):
     GPIO.output(motors[motor][1], True)
     sleep(time)
     GPIO.output(motors[motor][1], False)
 
 
-def Step6():
+def step6(motor):
     GPIO.output(motors[motor][0], True)
     GPIO.output(motors[motor][1], True)
     sleep(time)
@@ -66,13 +62,13 @@ def Step6():
     GPIO.output(motors[motor][1], False)
 
 
-def Step7():
+def step7(motor):
     GPIO.output(motors[motor][0], True)
     sleep(time)
     GPIO.output(motors[motor][0], False)
 
 
-def Step8():
+def step8(motor):
     GPIO.output(motors[motor][3], True)
     GPIO.output(motors[motor][0], True)
     sleep(time)
@@ -80,32 +76,32 @@ def Step8():
     GPIO.output(motors[motor][0], False)
 
 
-def left(step):
+def left(step, motor):
     for i in range(step):
         # os.system('clear')
-        Step1()
-        Step2()
-        Step3()
-        Step4()
-        Step5()
-        Step6()
-        Step7()
-        Step8()
-        print("Step left: ", i)
+        step1(motor)
+        step2(motor)
+        step3(motor)
+        step4(motor)
+        step5(motor)
+        step6(motor)
+        step7(motor)
+        step8(motor)
+        print("step left: ", i)
 
 
-def right(step):
+def right(step, motor):
     for i in range(step):
         # os.system('clear')
-        Step8()
-        Step7()
-        Step6()
-        Step5()
-        Step4()
-        Step3()
-        Step2()
-        Step1()
-        print("Step right: ", i)
+        step8(motor)
+        step7(motor)
+        step6(motor)
+        step5(motor)
+        step4(motor)
+        step3(motor)
+        step2(motor)
+        step1(motor)
+        print("step right: ", i)
 
 
 GPIO.cleanup()
