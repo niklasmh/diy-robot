@@ -7,8 +7,6 @@ motors = [
     [16, 26, 20, 21],
 ]
 
-motor = 1
-
 time = 0.001
 
 
@@ -20,85 +18,33 @@ def setup():
             GPIO.output(pin, False)
 
 
-def step1(motor):
-    GPIO.output(motors[motor][3], True)
-    sleep(time)
-    GPIO.output(motors[motor][3], False)
+steps = [
+    [3],
+    [3, 2],
+    [2],
+    [2, 1],
+    [1],
+    [1, 0],
+    [0],
+    [0, 3],
+]
 
 
-def step2(motor):
-    GPIO.output(motors[motor][3], True)
-    GPIO.output(motors[motor][2], True)
-    sleep(time)
-    GPIO.output(motors[motor][3], False)
-    GPIO.output(motors[motor][2], False)
+def up(count, motor, time=time):
+    for _ in range(count):
+        for step in steps:
+            for pin in step:
+                GPIO.output(motors[motor][pin], True)
+            sleep(time)
+            for pin in step:
+                GPIO.output(motors[motor][pin], False)
 
 
-def step3(motor):
-    GPIO.output(motors[motor][2], True)
-    sleep(time)
-    GPIO.output(motors[motor][2], False)
-
-
-def step4(motor):
-    GPIO.output(motors[motor][1], True)
-    GPIO.output(motors[motor][2], True)
-    sleep(time)
-    GPIO.output(motors[motor][1], False)
-    GPIO.output(motors[motor][2], False)
-
-
-def step5(motor):
-    GPIO.output(motors[motor][1], True)
-    sleep(time)
-    GPIO.output(motors[motor][1], False)
-
-
-def step6(motor):
-    GPIO.output(motors[motor][0], True)
-    GPIO.output(motors[motor][1], True)
-    sleep(time)
-    GPIO.output(motors[motor][0], False)
-    GPIO.output(motors[motor][1], False)
-
-
-def step7(motor):
-    GPIO.output(motors[motor][0], True)
-    sleep(time)
-    GPIO.output(motors[motor][0], False)
-
-
-def step8(motor):
-    GPIO.output(motors[motor][3], True)
-    GPIO.output(motors[motor][0], True)
-    sleep(time)
-    GPIO.output(motors[motor][3], False)
-    GPIO.output(motors[motor][0], False)
-
-
-def up(step, motor):
-    for i in range(step):
-        # os.system('clear')
-        step1(motor)
-        step2(motor)
-        step3(motor)
-        step4(motor)
-        step5(motor)
-        step6(motor)
-        step7(motor)
-        step8(motor)
-        print("step up: ", i)
-
-
-def down(step, motor):
-    for i in range(step):
-        # os.system('clear')
-        step8(motor)
-        step7(motor)
-        step6(motor)
-        step5(motor)
-        step4(motor)
-        step3(motor)
-        step2(motor)
-        step1(motor)
-        print("step down: ", i)
+def down(count, motor, time=time):
+    for _ in range(count):
+        for step in steps[::-1]:
+            for pin in step:
+                GPIO.output(motors[motor][pin], True)
+            sleep(time)
+            for pin in step:
+                GPIO.output(motors[motor][pin], False)
