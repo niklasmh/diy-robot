@@ -102,6 +102,3 @@ def right(step, motor):
         step2(motor)
         step1(motor)
         print("step right: ", i)
-
-
-GPIO.cleanup()
