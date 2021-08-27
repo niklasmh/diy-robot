@@ -4,7 +4,7 @@ import RPi.GPIO as GPIO
 
 motors = [
     [17, 18, 27, 22],
-    [16, 20, 26, 21],
+    [16, 26, 20, 21],
 ]
 
 motor = 1
