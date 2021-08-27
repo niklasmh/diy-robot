@@ -27,7 +27,7 @@
       image-rendering: pixelated;
     }
   </style>
-  <body onload="refreshImage()" class="min-h-screen py-1 text-gray-300">
+  <body class="min-h-screen py-1 text-gray-300">
     <div id="app"></div>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/components/prism-core.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/autoloader/prism-autoloader.min.js"></script>
@@ -61,6 +61,7 @@
 
         React.useEffect(() => {
           socket.current = io();
+          refreshImage();
           socket.current.on("position", (position) => {
             position.current.value = position;
             refreshImage();
@@ -73,15 +74,15 @@
 
         function sendCommand(motor, scale = 1) {
           const prefix = scale < 0 ? "-" : "";
-          const position = position.current.value;
+          const position = positionRef.current.value;
           socket.current.emit("move", prefix + position + "," + motor);
         }
         function locate() {
           socket.current.emit("locate");
         }
         function relocate() {
-          const lower = lower.current.value.replace(",", ".");
-          const upper = upper.current.value.replace(",", ".");
+          const lower = lowerRef.current.value.replace(",", ".");
+          const upper = upperRef.current.value.replace(",", ".");
           socket.current.emit("relocate", lower + "," + upper);
         }
 
