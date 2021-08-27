@@ -4,7 +4,7 @@ import os
 #from random import randint
 import random
 
-GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BOARD)
 
 IN1 = 11
 IN2 = 12
@@ -106,10 +106,5 @@ def right(step):
         Step1()
         print("Step right: ", i)
 
-
-if random.randint(0, 2) >= 1:
-    left(random.randint(100, 1024))
-else:
-    right(random.randint(100, 1024))
 
 GPIO.cleanup()
