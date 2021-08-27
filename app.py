@@ -3,6 +3,8 @@ from flask_socketio import SocketIO, emit
 import control_robot
 import find_robot_position
 
+control_robot.setup()
+
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'secret'
@@ -28,8 +30,10 @@ def handle_disconnect():
 def handle_move(data):
     [degrees, motor] = data.split(",")
     print('move: ' + degrees)
-    control_robot.setup()
-    control_robot.left(int(degrees), int(motor))
+    if int(degrees) > 0:
+        control_robot.left(degrees, int(motor))
+    else:
+        control_robot.right(degrees, int(motor))
 
 
 def get_position(new_image=True, lower=40, upper=20):
