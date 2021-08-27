@@ -31,7 +31,7 @@ steps = [
 
 
 def degToSteps(deg):
-    return deg * 260 / 180
+    return int(deg * 260 / 180)
 
 
 def up(degrees, motor, time=time):
