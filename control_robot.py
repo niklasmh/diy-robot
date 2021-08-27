@@ -1,15 +1,12 @@
 from time import sleep
 import RPi.GPIO as GPIO
-import os
-#from random import randint
-import random
 
-GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BCM)
 
-IN1 = 11
-IN2 = 12
-IN3 = 13
-IN4 = 15
+IN1 = 17
+IN2 = 18
+IN3 = 27
+IN4 = 22
 
 time = 0.001
 
