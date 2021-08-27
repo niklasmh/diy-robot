@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template
 from flask_socketio import SocketIO, emit
+import asyncio
 import control_robot
 import find_robot_position
 
@@ -32,9 +33,9 @@ def handle_move(data):
     print('move: ' + degrees)
     degrees = int(degrees)
     if degrees > 0:
-        control_robot.up(degrees, int(motor))
+        asyncio.run(control_robot.up(degrees, int(motor)))
     else:
-        control_robot.down(-degrees, int(motor))
+        asyncio.run(control_robot.down(-degrees, int(motor)))
 
 
 def get_position(new_image=True, lower=40, upper=20):

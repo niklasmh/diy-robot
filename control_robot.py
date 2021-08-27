@@ -1,4 +1,5 @@
 from time import sleep
+import asyncio
 import RPi.GPIO as GPIO
 
 
@@ -34,21 +35,21 @@ def degToSteps(deg):
     return int(deg * 260 / 180)
 
 
-def up(degrees, motor, time=time):
+async def up(degrees, motor, time=time):
     for _ in range(degToSteps(degrees)):
         for step in steps:
             for pin in step:
                 GPIO.output(motors[motor][pin], True)
-            sleep(time)
+            await asyncio.sleep(time)
             for pin in step:
                 GPIO.output(motors[motor][pin], False)
 
 
-def down(degrees, motor, time=time):
+async def down(degrees, motor, time=time):
     for _ in range(degToSteps(degrees)):
         for step in steps[::-1]:
             for pin in step:
                 GPIO.output(motors[motor][pin], True)
-            sleep(time)
+            await asyncio.sleep(time)
             for pin in step:
                 GPIO.output(motors[motor][pin], False)
