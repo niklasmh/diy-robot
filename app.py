@@ -30,7 +30,8 @@ def handle_disconnect():
 def handle_move(data):
     [degrees, motor] = data.split(",")
     print('move: ' + degrees)
-    if int(degrees) > 0:
+    degrees = int(degrees)
+    if degrees > 0:
         control_robot.left(degrees, int(motor))
     else:
         control_robot.right(degrees, int(motor))
