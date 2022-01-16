@@ -53,6 +53,9 @@
         const cameraRef = React.useRef();
         const cannyCameraRef = React.useRef();
         const socket = React.useRef();
+        const [realtimeRotation1, setRealtimeRotation1] = React.useState(0);
+        const [realtimeRotation2, setRealtimeRotation2] = React.useState(0);
+        const [realtimeRotation3, setRealtimeRotation3] = React.useState(0);
 
         function refreshImage() {
           cameraRef.current.src = "/static/camera.png?" + +new Date();
@@ -72,9 +75,21 @@
           });
         }, []);
 
-        function sendCommand(motor, scale = 1) {
+        React.useEffect(() => {
+          sendMoveCommand(0, 1, realtimeRotation1);
+        }, [realtimeRotation1]);
+
+        React.useEffect(() => {
+          sendMoveCommand(0, 1, realtimeRotation2);
+        }, [realtimeRotation2]);
+
+        React.useEffect(() => {
+          sendMoveCommand(0, 1, realtimeRotation3);
+        }, [realtimeRotation3]);
+
+        function sendMoveCommand(motor, scale = 1, value = null) {
           const prefix = scale < 0 ? "-" : "";
-          const position = positionRef.current.value;
+          const position = value ?? positionRef.current.value;
           socket.current.emit("move", prefix + position + "," + motor);
         }
         function locate() {
@@ -88,11 +103,38 @@
 
         return (
           <div className="container flex flex-col gap-8 mx-auto pb-20">
-            <input ref={positionRef} defaultValue={10} min={0} max={100} type="number" />
-            <Button onClick={() => sendCommand(0, 1)} label="Move 0 up" />
-            <Button onClick={() => sendCommand(0, -1)} label="Move 0 down" />
-            <Button onClick={() => sendCommand(1, 1)} label="Move 1 up" />
-            <Button onClick={() => sendCommand(1, -1)} label="Move 1 down" />
+            {/*<input ref={positionRef} defaultValue={10} min={0} max={100} type="number" />*/}
+            <input
+              onChange={(e) => {
+                setRealtimeRotation1(e.target.value);
+              }}
+              value={realtimeRotation1}
+              min={-135}
+              max={135}
+              type="number"
+            />
+            <input
+              onChange={(e) => {
+                setRealtimeRotation2(e.target.value);
+              }}
+              value={realtimeRotation1}
+              min={-135}
+              max={135}
+              type="number"
+            />
+            <input
+              onChange={(e) => {
+                setRealtimeRotation3(e.target.value);
+              }}
+              value={realtimeRotation1}
+              min={-135}
+              max={135}
+              type="number"
+            />
+            {/*<Button onClick={() => sendMoveCommand(0, 1)} label="Move 0 up" />
+            <Button onClick={() => sendMoveCommand(0, -1)} label="Move 0 down" />
+            <Button onClick={() => sendMoveCommand(1, 1)} label="Move 1 up" />
+            <Button onClick={() => sendMoveCommand(1, -1)} label="Move 1 down" />
             <br />
             <Button onClick={() => locate()} label="Locate" />
             <br />
@@ -101,7 +143,7 @@
             <Button onClick={() => relocate()} label="Relocate" />
             <br />
             <img ref={cameraRef} src="/static/camera.png" />
-            <img ref={cannyCameraRef} src="/static/canny_camera.png" />
+            <img ref={cannyCameraRef} src="/static/canny_camera.png" />*/}
           </div>
         );
       }

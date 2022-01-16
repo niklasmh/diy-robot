@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 import asyncio
 import control_robot
@@ -32,6 +32,8 @@ def handle_move(data):
     [degrees, motor] = data.split(",")
     print('move: ' + degrees)
     degrees = int(degrees)
+    asyncio.run(control_robot.set_joint_position(degrees, int(motor)))
+    return
     if degrees > 0:
         asyncio.run(control_robot.up(degrees, int(motor)))
     else:
