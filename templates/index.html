@@ -203,13 +203,13 @@
             <ArmController
               onJointUpdate={(joint, rotation) => {
                 if (joint === 0) {
-                  setRealtimeRotation1(rotation);
+                  setRealtimeRotation1(Math.floor(rotation));
                 }
                 if (joint === 1) {
-                  setRealtimeRotation2(rotation);
+                  setRealtimeRotation2(Math.floor(rotation));
                 }
                 if (joint === 2) {
-                  setRealtimeRotation3(rotation);
+                  setRealtimeRotation3(Math.floor(rotation));
                 }
               }}
               jointRotations={[realtimeRotation1, realtimeRotation2, realtimeRotation3]}
