@@ -97,6 +97,11 @@
           onJointUpdate(0, Math.min(90, Math.max(-90, (Math.atan2(y, x) * 180) / Math.PI - 90)));
         }, [pos]);
 
+        const style = {
+          width,
+          height,
+        };
+
         return (
           <canvas
             onMouseDown={() => setMouseIsDown(true)}
@@ -105,10 +110,7 @@
             ref={canvasRef}
             width={width}
             height={height}
-            style={{
-              width,
-              height,
-            }}
+            style={style}
           ></canvas>
         );
       }
