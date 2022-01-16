@@ -11,6 +11,8 @@ motors = [
 jointPins = [14, 15, 23]
 joints = []
 
+# TODO: Create a planner that can interpolate between joint positions
+
 time = 0.001
 prevDegrees = 0
 maxDegPerSec = 60 / 0.14
