@@ -76,8 +76,22 @@
             ctx.beginPath();
             ctx.fillRect(0, 0, width, height);
 
+            const j1r = jointRotations[0];
+            const j1x = cx - 30 * cm * sin(j1r);
+            const j1y = cy - 30 * cm * cos(j1r);
+
+            const j2r = jointRotations[1];
+            const j2x = j1x - 30 * cm * sin(j1r + j2r);
+            const j2y = j1y - 30 * cm * cos(j1r + j2r);
+
+            const j3r = jointRotations[2];
+            const j3x = j2x - 30 * cm * sin(j1r + j2r + j3r);
+            const j3y = j2y - 30 * cm * cos(j1r + j2r + j3r);
+
             ctx.moveTo(cx, cy);
-            ctx.lineTo(cx - 50 * cm * sin(jointRotations[0]), cy - 50 * cm * cos(jointRotations[0]));
+            ctx.lineTo(j1x, j1y);
+            ctx.lineTo(j2x, j2y);
+            ctx.lineTo(j3x, j3y);
             ctx.stroke();
           }
         }, [ctx, jointRotations]);
@@ -95,6 +109,8 @@
           // TODO: Calc IV Kinematics
           const { x, y } = pos;
           onJointUpdate(0, Math.min(90, Math.max(-90, (Math.atan2(y, x) * 180) / Math.PI - 90)));
+          onJointUpdate(1, -Math.min(90, Math.max(-90, (Math.atan2(y, x) * 180) / Math.PI - 90)));
+          onJointUpdate(2, Math.min(90, Math.max(-90, (Math.atan2(y, x) * 180) / Math.PI - 90)));
         }, [pos]);
 
         const style = {
