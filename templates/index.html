@@ -58,8 +58,8 @@
         const [realtimeRotation3, setRealtimeRotation3] = React.useState(0);
 
         function refreshImage() {
-          cameraRef.current.src = "/static/camera.png?" + +new Date();
-          cannyCameraRef.current.src = "/static/canny_camera.png?" + +new Date();
+          if (cameraRef.current) cameraRef.current.src = "/static/camera.png?" + +new Date();
+          if (cannyCameraRef.current) cannyCameraRef.current.src = "/static/canny_camera.png?" + +new Date();
         }
 
         React.useEffect(() => {
@@ -103,7 +103,7 @@
 
         return (
           <div className="container flex flex-col gap-8 mx-auto pb-20">
-            {/*<input ref={positionRef} defaultValue={10} min={0} max={100} type="number" />*/}
+            <input ref={positionRef} defaultValue={10} min={0} max={100} type="number" />
             <input
               onChange={(e) => {
                 setRealtimeRotation1(e.target.value);
