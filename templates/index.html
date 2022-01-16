@@ -80,11 +80,11 @@
         }, [realtimeRotation1]);
 
         React.useEffect(() => {
-          sendMoveCommand(0, 1, realtimeRotation2);
+          sendMoveCommand(1, 1, realtimeRotation2);
         }, [realtimeRotation2]);
 
         React.useEffect(() => {
-          sendMoveCommand(0, 1, realtimeRotation3);
+          sendMoveCommand(2, 1, realtimeRotation3);
         }, [realtimeRotation3]);
 
         function sendMoveCommand(motor, scale = 1, value = null) {
@@ -117,7 +117,7 @@
               onChange={(e) => {
                 setRealtimeRotation2(e.target.value);
               }}
-              value={realtimeRotation1}
+              value={realtimeRotation2}
               min={-135}
               max={135}
               type="number"
@@ -126,7 +126,7 @@
               onChange={(e) => {
                 setRealtimeRotation3(e.target.value);
               }}
-              value={realtimeRotation1}
+              value={realtimeRotation3}
               min={-135}
               max={135}
               type="number"
