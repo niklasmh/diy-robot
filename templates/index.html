@@ -46,6 +46,73 @@
         );
       }
 
+      function ArmController({ onJointUpdate, jointRotations }) {
+        const canvasRef = React.useRef();
+        const [ctx, setCtx] = React.useState(null);
+        const [mouseIsDown, setMouseIsDown] = React.useState(false);
+        const width = 512;
+        const height = 512;
+        const cm = width / 100;
+        const [pos, setPos] = React.useState({ x: 0, y: 50 * cm });
+
+        React.useEffect(() => {
+          if (canvasRef.current) {
+            setCtx(canvasRef.current.getContext("2d"));
+          }
+        }, []);
+
+        const sin = (x) => Math.sin((x * Math.PI) / 180);
+        const cos = (x) => Math.cos((x * Math.PI) / 180);
+
+        React.useEffect(() => {
+          if (ctx) {
+            const cx = 50 * cm;
+            const cy = 100 * cm;
+
+            ctx.fillStyle = "#000";
+            ctx.strokeStyle = "#ddd";
+            ctx.strokeWeight = 5;
+
+            ctx.beginPath();
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(cx - 50 * cm * sin(jointRotations[0]), cy - 50 * cm * cos(jointRotations[0]));
+            ctx.stroke();
+          }
+        }, [ctx, jointRotations]);
+
+        function setMousePosition({ clientX, clientY }) {
+          if (mouseIsDown) {
+            const { left, top } = canvasRef.current.getBoundingClientRect();
+            const x = ((clientX - left - width / 2) * 100) / width;
+            const y = ((height - (clientY - top)) * 100) / height;
+            setPos({ x, y });
+          }
+        }
+
+        React.useEffect(() => {
+          // TODO: Calc IV Kinematics
+          const { x, y } = pos;
+          onJointUpdate(0, Math.min(90, Math.max(-90, (Math.atan2(y, x) * 180) / Math.PI - 90)));
+        }, [pos]);
+
+        return (
+          <canvas
+            onMouseDown={() => setMouseIsDown(true)}
+            onMouseUp={() => setMouseIsDown(false)}
+            onMouseMove={setMousePosition}
+            ref={canvasRef}
+            width={width}
+            height={height}
+            style={{
+              width,
+              height,
+            }}
+          ></canvas>
+        );
+      }
+
       function App() {
         const positionRef = React.useRef();
         const lowerRef = React.useRef();
@@ -130,6 +197,20 @@
               min={-135}
               max={135}
               type="number"
+            />
+            <ArmController
+              onJointUpdate={(joint, rotation) => {
+                if (joint === 0) {
+                  setRealtimeRotation1(rotation);
+                }
+                if (joint === 1) {
+                  setRealtimeRotation2(rotation);
+                }
+                if (joint === 2) {
+                  setRealtimeRotation3(rotation);
+                }
+              }}
+              jointRotations={[realtimeRotation1, realtimeRotation2, realtimeRotation3]}
             />
             {/*<Button onClick={() => sendMoveCommand(0, 1)} label="Move 0 up" />
             <Button onClick={() => sendMoveCommand(0, -1)} label="Move 0 down" />
