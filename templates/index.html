@@ -2,13 +2,19 @@
 <html>
   <head>
     <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap" rel="stylesheet" />
-    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" />
-    <script
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <!--<script
       src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
       integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
       crossorigin="anonymous"
-    ></script>
+    ></script>-->
   </head>
   <style>
     body {
@@ -33,10 +39,22 @@
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/autoloader/prism-autoloader.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/components/prism-json.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.18.0/matter.min.js"></script>
-    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
-    <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js" crossorigin></script>
-    <script src="https://unpkg.com/state-local@1.0.7/lib/umd/state-local.min.js" crossorigin></script>
+    <script
+      src="https://unpkg.com/react@17/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/prop-types@15.7.2/prop-types.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/state-local@1.0.7/lib/umd/state-local.min.js"
+      crossorigin
+    ></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script type="text/babel" data-type="module">
       var Engine = Matter.Engine,
@@ -150,13 +168,19 @@
 
       function Button({ label, color = "bg-blue-500", ...props }) {
         return (
-          <button className={color + " hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"} {...props}>
+          <button
+            className={
+              color +
+              " hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            }
+            {...props}
+          >
             {label}
           </button>
         );
       }
 
-      function ArmController({ onJointUpdate, jointRotations }) {
+      function ArmController({ onJointUpdate, jointRotations, jointLengths }) {
         const canvasRef = React.useRef();
         const [ctx, setCtx] = React.useState(null);
         const [mouseIsDown, setMouseIsDown] = React.useState(false);
@@ -173,6 +197,8 @@
 
         const sin = (x) => Math.sin((x * Math.PI) / 180);
         const cos = (x) => Math.cos((x * Math.PI) / 180);
+        const posToDir = (dx, dy) => 90 - (Math.atan2(dy, dx) * 180) / Math.PI;
+        const dist = (dx, dy) => Math.sqrt(dx * dx + dy * dy);
 
         React.useEffect(() => {
           if (ctx) {
@@ -187,16 +213,19 @@
             ctx.fillRect(0, 0, width, height);
 
             const j1r = jointRotations[0];
-            const j1x = cx - 30 * cm * sin(j1r);
-            const j1y = cy - 30 * cm * cos(j1r);
+            const j1l = jointLengths[0];
+            const j1x = cx + j1l * cm * sin(j1r);
+            const j1y = cy - j1l * cm * cos(j1r);
 
             const j2r = jointRotations[1];
-            const j2x = j1x - 30 * cm * sin(j1r + j2r);
-            const j2y = j1y - 30 * cm * cos(j1r + j2r);
+            const j2l = jointLengths[1];
+            const j2x = j1x + j2l * cm * sin(j1r + j2r);
+            const j2y = j1y - j2l * cm * cos(j1r + j2r);
 
             const j3r = jointRotations[2];
-            const j3x = j2x - 30 * cm * sin(j1r + j2r + j3r);
-            const j3y = j2y - 30 * cm * cos(j1r + j2r + j3r);
+            const j3l = jointLengths[2];
+            const j3x = j2x + j3l * cm * sin(j1r + j2r + j3r);
+            const j3y = j2y - j3l * cm * cos(j1r + j2r + j3r);
 
             ctx.moveTo(cx, cy);
             ctx.lineTo(j1x, j1y);
@@ -204,7 +233,7 @@
             ctx.lineTo(j3x, j3y);
             ctx.stroke();
           }
-        }, [ctx, jointRotations]);
+        }, [ctx, jointRotations, jointLengths]);
 
         function setMousePosition({ clientX, clientY }) {
           if (mouseIsDown) {
@@ -215,14 +244,73 @@
           }
         }
 
+        const jointRotationsRef = React.useRef(jointRotations);
+        React.useEffect(() => {
+          jointRotationsRef.current = jointRotations;
+        }, [jointRotations]);
+
+        const jointLengthsRef = React.useRef(jointLengths);
+        React.useEffect(() => {
+          jointLengthsRef.current = jointLengths;
+        }, [jointLengths]);
+
         React.useEffect(() => {
           // TODO: Calc IV Kinematics
           const { x, y } = pos;
-          const angle = Math.min(90, Math.max(-90, (Math.atan2(y, x) * 180) / Math.PI - 90));
-          const dist = Math.sqrt(x * x + y * y) / 10;
-          onJointUpdate(0, angle);
-          onJointUpdate(1, angle / dist);
-          onJointUpdate(2, angle / dist);
+          let [rot1, rot2, rot3] = jointRotationsRef.current;
+          let [len1, len2, len3] = jointLengthsRef.current;
+          let x0 = 0;
+          let x1 = x0 + len1 * sin(rot1);
+          let x2 = x1 + len2 * sin(rot1 + rot2);
+          let x3 = x2 + len3 * sin(rot1 + rot2 + rot3);
+          let y0 = 0;
+          let y1 = y0 + len1 * cos(rot1);
+          let y2 = y1 + len2 * cos(rot1 + rot2);
+          let y3 = y2 + len3 * cos(rot1 + rot2 + rot3);
+
+          /* FABRIK attempt * /
+          for (let i = 0; i < 1; i++) {
+            // Oppdatere siste ledd -> base
+            x3 = x;
+            y3 = y;
+            rot3 = posToDir(y3 - y2, x3 - x2) - rot1 - rot2;
+            x2 = x3 - len3 * sin(rot3);
+            y2 = y3 - len3 * cos(rot3);
+            rot2 = posToDir(y2 - y1, x2 - x1) - rot1;
+            x1 = x2 - len2 * sin(rot2);
+            y1 = y2 - len2 * cos(rot2);
+            rot1 = posToDir(y1 - y0, x1 - x0);
+            // Oppdatere base -> siste ledd
+            x1 = x0 + len1 * sin(rot1);
+            y1 = y0 + len1 * cos(rot1);
+            rot2 = posToDir(y2 - y1, x2 - x1) - rot1;
+            x2 = x1 + len2 * sin(rot2);
+            y2 = y1 + len2 * cos(rot2);
+            rot3 = posToDir(y3 - y2, x3 - x2) - rot1 - rot2;
+          }
+          /**/
+
+          /**/
+          const d = dist(x, y);
+          const tlen = len1 + len2 + len3;
+          if (d > tlen) {
+            rot1 = posToDir(x, y);
+            rot2 = 0;
+            rot3 = 0;
+          } else {
+            const dir = posToDir(x, y);
+            const bend = 1 - d / tlen;
+            rot1 = dir + 90 * bend;
+            rot2 = -90 * bend;
+            rot3 = -90 * bend;
+          }
+          /**/
+
+          jointRotationsRef.current = [rot1, rot2, rot3];
+          jointLengthsRef.current = [len1, len2, len3];
+          onJointUpdate(0, rot1);
+          onJointUpdate(1, rot2);
+          onJointUpdate(2, rot3);
         }, [pos]);
 
         const style = {
@@ -250,17 +338,21 @@
         const cameraRef = React.useRef();
         const cannyCameraRef = React.useRef();
         const socket = React.useRef();
-        const [realtimeRotation1, setRealtimeRotation1] = React.useState(0);
-        const [realtimeRotation2, setRealtimeRotation2] = React.useState(0);
-        const [realtimeRotation3, setRealtimeRotation3] = React.useState(0);
+        const [realtimeRotation1, setRealtimeRotation1] = React.useState(30);
+        const [realtimeRotation2, setRealtimeRotation2] = React.useState(30);
+        const [realtimeRotation3, setRealtimeRotation3] = React.useState(30);
 
         function refreshImage() {
-          if (cameraRef.current) cameraRef.current.src = "/static/camera.png?" + +new Date();
-          if (cannyCameraRef.current) cannyCameraRef.current.src = "/static/canny_camera.png?" + +new Date();
+          if (cameraRef.current)
+            cameraRef.current.src = "/static/camera.png?" + +new Date();
+          if (cannyCameraRef.current)
+            cannyCameraRef.current.src =
+              "/static/canny_camera.png?" + +new Date();
         }
 
         React.useEffect(() => {
-          socket.current = io();
+          socket.current =
+            typeof io !== "undefined" ? io() : { on: () => {}, emit: () => {} };
           refreshImage();
           socket.current.on("position", (position) => {
             position.current.value = position;
@@ -300,7 +392,13 @@
 
         return (
           <div className="container flex flex-col gap-8 mx-auto pb-20">
-            <input ref={positionRef} defaultValue={10} min={0} max={100} type="number" />
+            <input
+              ref={positionRef}
+              defaultValue={10}
+              min={0}
+              max={100}
+              type="number"
+            />
             <input
               onChange={(e) => {
                 setRealtimeRotation1(e.target.value);
@@ -340,7 +438,12 @@
                   setRealtimeRotation3(Math.floor(rotation));
                 }
               }}
-              jointRotations={[realtimeRotation1, realtimeRotation2, realtimeRotation3]}
+              jointRotations={[
+                realtimeRotation1,
+                realtimeRotation2,
+                realtimeRotation3,
+              ]}
+              jointLengths={[30, 30, 30]}
             />
             {/*<Button onClick={() => sendMoveCommand(0, 1)} label="Move 0 up" />
             <Button onClick={() => sendMoveCommand(0, -1)} label="Move 0 down" />
