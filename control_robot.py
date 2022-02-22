@@ -3,6 +3,10 @@ from time import sleep
 import asyncio
 import RPi.GPIO as GPIO
 
+from gpiozero import Servo
+from gpiozero.pins.pigpio import PiGPIOFactory
+factory = PiGPIOFactory()
+
 
 motors = [
     [17, 18, 27, 22],
@@ -11,11 +15,18 @@ motors = [
 jointPins = [14, 15, 23]
 joints = []
 
+for pin in jointPins:
+    joints.append(
+        Servo(pin, min_pulse_width=0.5/1000,
+              max_pulse_width=2.5/1000, pin_factory=factory)
+    )
+
 # TODO: Create a planner that can interpolate between joint positions
 
 time = 0.001
 prevDegrees = 0
 maxDegPerSec = 60 / 0.14
+
 
 def degToTime(deg):
     return max(0.1, (0.14 / 60) * deg * 1.5)
@@ -26,7 +37,7 @@ def degToSteps(deg):
 
 
 def degToDC(deg):
-    return min(12, max(2, 2 + (135 + deg) * 10 / 270))
+    return deg / 135
 
 
 def setup():
@@ -34,32 +45,20 @@ def setup():
     prevDegrees = 0
     GPIO.setmode(GPIO.BCM)
 
-    for pin in jointPins:
-        GPIO.setup(pin, GPIO.OUT)
-        GPIO.output(pin, GPIO.HIGH)
-        joints.append(GPIO.PWM(pin, 50)) # 50 - 330Hz
-
     for joint in joints:
-        joint.start(degToDC(0))
-        sleep(0.3)
-        joint.ChangeDutyCycle(0)
+        joint.value = 0
 
-    for i in range(0, 1):
-    #for i in range(0, 10000):
+    for i in range(0, 0):
+        # for i in range(0, 10000):
         for j, joint in enumerate(joints):
             hz = 0.02
-            joint.ChangeDutyCycle(degToDC(90 * sin(i / 0.125 * hz + j)*0.5))
+            joint.value = sin(i / 0.125 * hz + j)*0.5
             sleep(hz)
 
-    for joint in joints:
-        joint.start(degToDC(0))
-        sleep(0.3)
-        joint.ChangeDutyCycle(0)
-
-    for motor in motors:
-        for pin in motor:
-            GPIO.setup(pin, GPIO.OUT)
-            GPIO.output(pin, False)
+    # for motor in motors:
+    #    for pin in motor:
+    #        GPIO.setup(pin, GPIO.OUT)
+    #        GPIO.output(pin, False)
 
 
 steps = [
@@ -98,12 +97,10 @@ async def set_joint_position(degrees, joint, time=time):
     global prevDegrees
 
     print("Deg:", degrees, degToDC(degrees))
-    joints[joint].ChangeDutyCycle(degToDC(degrees))
+    joints[joint].value = degToDC(degrees)
 
     dt = degToTime(abs(degrees - prevDegrees))
     print("Wait:", dt)
     await asyncio.sleep(dt)
-
-    joints[joint].ChangeDutyCycle(0)
 
     prevDegrees = degrees

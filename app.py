@@ -31,7 +31,7 @@ def handle_disconnect():
 def handle_move(data):
     [degrees, motor] = data.split(",")
     print('move: ' + degrees)
-    degrees = int(degrees)
+    degrees = float(degrees)
     asyncio.run(control_robot.set_joint_position(degrees, int(motor)))
     return
     if degrees > 0:
