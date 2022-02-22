@@ -53,7 +53,10 @@
         const [mouseIsDown, setMouseIsDown] = React.useState(false);
         const width = 512;
         const height = 512;
-        const cm = width / 100;
+        const canvasWidth = 16;
+        const cm = width / canvasWidth;
+        const offsetX = 6 * cm;
+        const padding = 2 * cm;
         const [pos, setPos] = React.useState({ x: 0, y: 50 * cm });
 
         React.useEffect(() => {
@@ -69,15 +72,17 @@
 
         React.useEffect(() => {
           if (ctx) {
-            const cx = 50 * cm;
-            const cy = 100 * cm;
+            const cx = (canvasWidth / 2) * cm + offsetX;
+            const cy = canvasWidth * cm;
 
-            ctx.fillStyle = "#000";
+            ctx.fillStyle = "#2d2d2d";
             ctx.strokeStyle = "#ddd";
             ctx.strokeWeight = 5;
 
             ctx.beginPath();
             ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = "#000";
+            ctx.fillRect(padding, padding, width - padding * 2, height - padding * 2);
 
             const j1r = jointRotations[0];
             const j1l = jointLengths[0];
@@ -105,8 +110,8 @@
         function setMousePosition({ clientX, clientY }) {
           if (mouseIsDown) {
             const { left, top } = canvasRef.current.getBoundingClientRect();
-            const x = ((clientX - left - width / 2) * 100) / width;
-            const y = ((height - (clientY - top)) * 100) / height;
+            const x = ((clientX - left - width / 2) * canvasWidth) / width - offsetX / cm;
+            const y = ((height - (clientY - top)) * canvasWidth) / height;
             setPos({ x, y });
           }
         }
@@ -275,7 +280,7 @@
                 }
               }}
               jointRotations={[realtimeRotation1, realtimeRotation2, realtimeRotation3]}
-              jointLengths={[30, 30, 30]}
+              jointLengths={[6.35, 6.35, 6.35]}
             />
             {/*<Button onClick={() => sendMoveCommand(0, 1)} label="Move 0 up" />
             <Button onClick={() => sendMoveCommand(0, -1)} label="Move 0 down" />
