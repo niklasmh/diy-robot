@@ -23,7 +23,7 @@ for pin in jointPins:
 
 # TODO: Create a planner that can interpolate between joint positions
 
-time = 0.01
+time = 0.1
 prevDegrees = 0
 maxDegPerSec = 60 / 0.14
 
