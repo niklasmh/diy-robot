@@ -23,7 +23,7 @@ for pin in jointPins:
 
 # TODO: Create a planner that can interpolate between joint positions
 
-time = 0.001
+time = 0.01
 prevDegrees = 0
 maxDegPerSec = 60 / 0.14
 
@@ -36,7 +36,7 @@ def degToSteps(deg):
     return int(deg * 260 / 180)
 
 
-def degToDC(deg):
+def degToPos(deg):
     return deg / 135
 
 
@@ -96,11 +96,17 @@ async def down(degrees, motor, time=time):
 async def set_joint_position(degrees, joint, time=time):
     global prevDegrees
 
-    print("Deg:", degrees, degToDC(degrees))
-    joints[joint].value = degToDC(degrees)
+    print("Deg:", degrees, degToPos(degrees))
+    joints[joint].value = degToPos(degrees)
 
     dt = degToTime(abs(degrees - prevDegrees))
     print("Wait:", dt)
     await asyncio.sleep(dt)
 
     prevDegrees = degrees
+
+
+def set_joint_positions(degrees, time=time):
+    for degree, joint in zip(degrees, joints):
+        joint.value = degToPos(degree)
+    sleep(time)

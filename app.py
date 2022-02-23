@@ -40,6 +40,15 @@ def handle_move(data):
         asyncio.run(control_robot.down(-degrees, int(motor)))
 
 
+@socketio.on('moves')
+def handle_move(data):
+    snapshots = data.split(";")
+    print("Snapshot series: ", snapshots)
+    for snapshot in snapshots:
+        degrees = list(map(float, snapshot.split(",")))
+        control_robot.set_joint_positions(degrees)
+
+
 def get_position(new_image=True, lower=40, upper=20):
     position = find_robot_position.locate(
         assumed_position=[0, 0],

@@ -192,6 +192,7 @@
         const [realtimeRotation1, setRealtimeRotation1] = React.useState(30);
         const [realtimeRotation2, setRealtimeRotation2] = React.useState(30);
         const [realtimeRotation3, setRealtimeRotation3] = React.useState(30);
+        const [snapshots, setSnapshots] = React.useState([]);
 
         function refreshImage() {
           if (cameraRef.current) cameraRef.current.src = "/static/camera.png?" + +new Date();
@@ -211,22 +212,16 @@
           });
         }, []);
 
-        React.useEffect(() => {
-          sendMoveCommand(0, 1, realtimeRotation1);
-        }, [realtimeRotation1]);
+        const addSnapshot = (snapshot) => {
+          setSnapshots((s) => [...s, snapshot]);
+        };
 
         React.useEffect(() => {
-          sendMoveCommand(1, 1, realtimeRotation2);
-        }, [realtimeRotation2]);
+          addSnapshot([realtimeRotation1, realtimeRotation2, realtimeRotation3].join(","));
+        }, [realtimeRotation1, realtimeRotation2, realtimeRotation3]);
 
-        React.useEffect(() => {
-          sendMoveCommand(2, 1, realtimeRotation3);
-        }, [realtimeRotation3]);
-
-        function sendMoveCommand(motor, scale = 1, value = null) {
-          const prefix = scale < 0 ? "-" : "";
-          const position = value ?? positionRef.current.value;
-          socket.current.emit("move", prefix + position + "," + motor);
+        function sendMoveCommands(snapshots) {
+          socket.current.emit("moves", snapshots.join(";"));
         }
         function locate() {
           socket.current.emit("locate");
