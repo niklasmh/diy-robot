@@ -217,12 +217,13 @@
         };
 
         const prevTime = React.useRef(Date.now());
-        const minDt = 0.1;
+        const minDt = 0.1 * 1000;
         React.useEffect(() => {
           const now = Date.now();
-          if (prevTime + minDt < now) {
-            addSnapshot([realtimeRotation1, realtimeRotation2, realtimeRotation3].join(","));
-            prevTime = now;
+          if (prevTime.current + minDt < now) {
+            const snapshot = [realtimeRotation1, realtimeRotation2, realtimeRotation3].join(",");
+            addSnapshot(snapshot);
+            prevTime.current = now;
           }
         }, [realtimeRotation1, realtimeRotation2, realtimeRotation3]);
 
