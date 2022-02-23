@@ -41,7 +41,7 @@ def handle_move(data):
 
 
 @socketio.on('moves')
-def handle_move(data):
+def handle_moves(data):
     snapshots = data.split(";")
     print("Snapshot series: ", snapshots)
     for snapshot in snapshots:
