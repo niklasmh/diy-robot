@@ -217,7 +217,7 @@
         };
 
         const prevTime = React.useRef(Date.now());
-        const minDt = 0.1 * 1000;
+        const minDt = 0.02 * 1000;
         React.useEffect(() => {
           const now = Date.now();
           if (prevTime.current + minDt < now) {
