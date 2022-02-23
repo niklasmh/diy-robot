@@ -216,8 +216,14 @@
           setSnapshots((s) => [...s, snapshot]);
         };
 
+        const prevTime = React.useRef(Date.now());
+        const minDt = 0.1;
         React.useEffect(() => {
-          addSnapshot([realtimeRotation1, realtimeRotation2, realtimeRotation3].join(","));
+          const now = Date.now();
+          if (prevTime + minDt < now) {
+            addSnapshot([realtimeRotation1, realtimeRotation2, realtimeRotation3].join(","));
+            prevTime = now;
+          }
         }, [realtimeRotation1, realtimeRotation2, realtimeRotation3]);
 
         function sendMoveCommands(snapshots) {
@@ -235,6 +241,7 @@
         return (
           <div className="container flex flex-col gap-8 mx-auto pb-20">
             <input ref={positionRef} defaultValue={10} min={0} max={100} type="number" />
+            <button onClick={() => sendMoveCommands(snapshots)}>Send</button>
             <input
               onChange={(e) => {
                 setRealtimeRotation1(e.target.value);
