@@ -229,6 +229,7 @@
 
         function sendMoveCommands(snapshots) {
           socket.current.emit("moves", snapshots.join(";"));
+          setSnapshots([]);
         }
         function locate() {
           socket.current.emit("locate");
