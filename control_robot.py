@@ -12,7 +12,7 @@ motors = [
     [17, 18, 27, 22],
     [16, 26, 20, 21],
 ]
-jointPins = [14, 15, 18]
+jointPins = [14, 15, 23]
 joints = []
 
 for pin in jointPins:
