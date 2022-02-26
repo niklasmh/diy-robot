@@ -12,7 +12,7 @@ motors = [
     [17, 18, 27, 22],
     [16, 26, 20, 21],
 ]
-jointPins = [14, 15, 23]
+jointPins = [14, 15, 18]
 joints = []
 
 for pin in jointPins:
@@ -37,7 +37,7 @@ def degToSteps(deg):
 
 
 def degToPos(deg):
-    return deg / 135
+    return -deg / 135
 
 
 def setup():
