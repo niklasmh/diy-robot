@@ -119,6 +119,44 @@ def skrew_holes():
     )
 
 
+def pen_holder():
+    space_between_joints = 6.35 * cm
+    pen_dist = space_between_joints - 2.7 * cm
+    max_pen_r = 0.5 * cm
+
+    pen_holder = cube([arm_width, pen_dist+max_pen_r, arm_width / 2])
+    pen_holder = translate([dw, -pen_dist-max_pen_r, 0])(pen_holder)
+
+    pen_hole = cylinder(max_pen_r, arm_width / 2 + z*2)
+    pen_hole = translate([dw + arm_width / 2, -pen_dist, -z])(pen_hole)
+
+    pen_thread_hole = cylinder(0.25 * cm, arm_width + z*2)
+    pen_thread_hole = rotate([0, 90, 0])(pen_thread_hole)
+    pen_thread_hole = translate(
+        [dw - z, -pen_dist, arm_width / 4 - z])(pen_thread_hole)
+
+    pen_thread_hook = cylinder(0.2 * cm, arm_width + dw*2)
+    pen_thread_hook = rotate([0, 90, 0])(pen_thread_hook)
+    pen_thread_hook = translate([0, -0.2 * cm, arm_width / 4])(pen_thread_hook)
+
+    pen_holder_base = cube([arm_width, dw*1.5, arm_height])
+    pen_holder_base = translate([dw, -dw*1.5, 0])(pen_holder_base)
+
+    return translate([0, -dw, 0])(
+        pen_holder_base
+        + pen_holder
+        - pen_hole
+        - pen_thread_hole
+        + pen_thread_hook
+        + translate([0, 0, arm_height])(
+            pen_holder
+            - pen_hole
+            - pen_thread_hole
+            + pen_thread_hook
+        )
+    )
+
+
 fn = 32
 scad_render_to_file(
     arm_attachment_base() - skrew_holes(),
@@ -128,4 +166,9 @@ scad_render_to_file(
 scad_render_to_file(
     table_attachment_base() - skrew_holes(),
     __file__[:-3] + "_base.scad", file_header='$fn = %d;' % fn
+)
+
+scad_render_to_file(
+    pen_holder() - skrew_holes(),
+    __file__[:-3] + "_pen_holder.scad", file_header='$fn = %d;' % fn
 )
