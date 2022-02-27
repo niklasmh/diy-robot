@@ -106,7 +106,18 @@ async def set_joint_position(degrees, joint, time=time):
     prevDegrees = degrees
 
 
+prev_degrees = [0, 0, 0]
+
+
 def set_joint_positions(degrees, time=time):
-    for degree, joint in zip(degrees, joints):
-        joint.value = degToPos(degree)
-    sleep(time)
+    global prev_degrees
+    #max_degrees = max(degrees)
+
+    for progress in range(1, 101, 10):
+        p = progress / 100
+        for end_degree, joint in zip(degrees, joints):
+            degree = prev_degrees + (end_degree - prev_degrees) * p
+            joint.value = degToPos(degree)
+        sleep(time)
+
+    prev_degrees = degrees
