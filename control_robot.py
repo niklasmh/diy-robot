@@ -23,8 +23,7 @@ for pin in jointPins:
 
 # TODO: Create a planner that can interpolate between joint positions
 
-time = 0.02
-prevDegrees = 0
+time = 0.02 / 10
 maxDegPerSec = 60 / 0.14
 
 
@@ -41,19 +40,7 @@ def degToPos(deg):
 
 
 def setup():
-    global prevDegrees
-    prevDegrees = 0
     GPIO.setmode(GPIO.BCM)
-
-    for joint in joints:
-        joint.value = 0
-
-    for i in range(0, 0):
-        # for i in range(0, 10000):
-        for j, joint in enumerate(joints):
-            hz = 0.02
-            joint.value = sin(i / 0.125 * hz + j)*0.5
-            sleep(hz)
 
     # for motor in motors:
     #    for pin in motor:
@@ -93,17 +80,20 @@ async def down(degrees, motor, time=time):
                 GPIO.output(motors[motor][pin], False)
 
 
-async def set_joint_position(degrees, joint, time=time):
-    global prevDegrees
+prev_degree = 0
 
-    print("Deg:", degrees, degToPos(degrees))
-    joints[joint].value = degToPos(degrees)
 
-    dt = degToTime(abs(degrees - prevDegrees))
+async def set_joint_position(degree, joint, time=time):
+    global prev_degree
+
+    print("Deg:", degree, degToPos(degree))
+    joints[joint].value = degToPos(degree)
+
+    dt = degToTime(abs(degree - prev_degree))
     print("Wait:", dt)
     await asyncio.sleep(dt)
 
-    prevDegrees = degrees
+    prev_degree = degree
 
 
 prev_degrees = [0, 0, 0]
