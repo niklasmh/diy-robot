@@ -110,7 +110,7 @@ def set_joint_positions(degrees, time=time):
 
     for progress in linspace(0, 1, steps):
         for i, joint in enumerate(joints):
-            degree = prev_degrees[i] + degrees_diff * progress
+            degree = prev_degrees[i] + degrees_diff[i] * progress
             joint.value = degToPos(degree)
         sleep(time)
 
