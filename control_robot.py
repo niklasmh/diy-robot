@@ -23,7 +23,7 @@ for pin in jointPins:
 
 # TODO: Create a planner that can interpolate between joint positions
 
-time = 0.02 / 10
+time = 0.02 / 100
 maxDegPerSec = 60 / 0.14
 
 
@@ -103,13 +103,14 @@ prev_degrees = [0, 0, 0]
 
 def set_joint_positions(degrees, time=time):
     global prev_degrees
-    #max_degrees = max(degrees)
+    degrees_diff = [degrees[i] - prev_degrees[i] for i in range(3)]
+    max_degree_diff = max(degrees_diff)
+    steps = max_degree_diff
 
-    for progress in range(1, 101, 10):
-        p = progress / 100
-        for i, (end_degree, joint) in enumerate(zip(degrees, joints)):
-            prev_degree = prev_degrees[i]
-            degree = prev_degree + (end_degree - prev_degree) * p
+    for step in range(1, steps + 1):
+        progress = step / steps
+        for i, joint in enumerate(joints):
+            degree = prev_degrees[i] + degrees_diff * progress
             joint.value = degToPos(degree)
         sleep(time)
 
