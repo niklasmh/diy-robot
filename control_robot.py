@@ -106,7 +106,7 @@ def set_joint_positions(degrees, time=time):
     global prev_degrees
     degrees_diff = [degrees[i] - prev_degrees[i] for i in range(len(degrees))]
     max_degree_diff = max(degrees_diff)
-    steps = int(max_degree_diff)
+    steps = int(abs(max_degree_diff)) + 1
 
     for progress in linspace(0, 1, steps):
         for i, joint in enumerate(joints):
