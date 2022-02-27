@@ -115,8 +115,9 @@ def set_joint_positions(degrees, time=time):
 
     for progress in range(1, 101, 10):
         p = progress / 100
-        for end_degree, joint in zip(degrees, joints):
-            degree = prev_degrees + (end_degree - prev_degrees) * p
+        for i, (end_degree, joint) in enumerate(zip(degrees, joints)):
+            prev_degree = prev_degrees[i]
+            degree = prev_degree + (end_degree - prev_degree) * p
             joint.value = degToPos(degree)
         sleep(time)
 
