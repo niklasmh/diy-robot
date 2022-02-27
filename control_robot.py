@@ -1,4 +1,5 @@
 from math import *
+from numpy import linspace
 from time import sleep
 import asyncio
 import RPi.GPIO as GPIO
@@ -103,12 +104,11 @@ prev_degrees = [0, 0, 0]
 
 def set_joint_positions(degrees, time=time):
     global prev_degrees
-    degrees_diff = [degrees[i] - prev_degrees[i] for i in range(3)]
+    degrees_diff = [degrees[i] - prev_degrees[i] for i in range(len(degrees))]
     max_degree_diff = max(degrees_diff)
-    steps = max_degree_diff
+    steps = int(max_degree_diff)
 
-    for step in range(1, steps + 1):
-        progress = step / steps
+    for progress in linspace(0, 1, steps):
         for i, joint in enumerate(joints):
             degree = prev_degrees[i] + degrees_diff * progress
             joint.value = degToPos(degree)
