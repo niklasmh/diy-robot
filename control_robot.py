@@ -42,6 +42,8 @@ def degToPos(deg):
 def setup():
     GPIO.setmode(GPIO.BCM)
 
+    set_joint_positions([0, 0, 0])
+
     # for motor in motors:
     #    for pin in motor:
     #        GPIO.setup(pin, GPIO.OUT)
